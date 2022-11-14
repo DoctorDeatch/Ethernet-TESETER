@@ -1,11 +1,10 @@
+#include <Arduino.h>
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include <ETH.h>
 #include <EEPROM.h>
 #include <ESP32Ping.h>
 TFT_eSPI tft = TFT_eSPI();
-#define nicCable 34   //Ethernt Cable Sensor
-#define BUZZER 21 
 int set_ping = 3;  //Cont step ping, not up 6
 int x, y, menu, rh, ret, key, a, b, c[3][4], d, e, f, n, count, cp;
 const char* pref ;
@@ -26,28 +25,17 @@ void setup() {
  pinMode(nicCable, INPUT_PULLUP);
   EEPROM.begin(512);  EEPROM.get(1,dhcp_on);  EEPROM.get(50,count);
   randomSeed(analogRead(0));
-  static bool eth_connected = false;
   tft.init();  tft.setRotation(1);
   for (uint8_t i = 0; i < 5; i++)
-  {
-    EEPROM.get(100+(i*10),calData[i]);
-  }
-  //uint16_t calData[5] = { 369, 3275, 388, 2929, 5 }; // enabling static touch screen calibration parameters
-    pinMode(NRST, OUTPUT);
-    digitalWrite(NRST, 0);
-    delay(200);
-    digitalWrite(NRST, 1);
-    delay(200);
-    digitalWrite(NRST, 0);
-    delay(200);
-    digitalWrite(NRST, 1);  
+  {    EEPROM.get(100+(i*10),calData[i]);  }
+  //uint16_t calData[5] = { 369, 3275, 388, 2929, 5 }; // enabling static touch screen calibration parameters 
   ETH.begin();
   if (dhcp_on==0){
 IPAddress local_IP(EEPROM.read(10), EEPROM.read(11), EEPROM.read(12), EEPROM.read(13));
 IPAddress subnet(EEPROM.read(20), EEPROM.read(21), EEPROM.read(22), EEPROM.read(23));
 IPAddress gateway(EEPROM.read(30), EEPROM.read(31), EEPROM.read(32), EEPROM.read(33));
-IPAddress primaryDNS(8, 8, 8, 8);
-IPAddress secondaryDNS(8, 8, 4, 4);  
+IPAddress primaryDNS(EEPROM.read(30), EEPROM.read(31), EEPROM.read(32), EEPROM.read(33));
+IPAddress secondaryDNS(8, 8, 8, 8);  
 ETH.config(local_IP,gateway,subnet,primaryDNS,secondaryDNS);
   }
   ETH.setHostname("IP-TESTER");
@@ -59,8 +47,8 @@ ETH.config(local_IP,gateway,subnet,primaryDNS,secondaryDNS);
   tft.setCursor(100, 215);  tft.setTextFont(4);  tft.setTextSize(1);  tft.print("Technical support by Doc");  delay(1000);    
   tft.setCursor(120, 250);  tft.print("CopyRight @2022"); 
   tft.setCursor(80, 280);  tft.setTextFont(4);  tft.setTextSize(1); tft.setTextColor(TFT_SILVER); tft.print("Web: https://radio-portal.su"); delay(5000);
- //  touch_calibrate(); // enabling forced calibration of the touch screen
-  if (EEPROM.read(100) == 255 && EEPROM.read(110) == 255 && EEPROM.read(120) == 255 && EEPROM.read(130) == 255 && EEPROM.read(150) == 255) touch_calibrate(); else tft.setTouch(calData);
+ // touch_calibrate(); // enabling forced calibration of the touch screen
+ if (count < 0) touch_calibrate(); else tft.setTouch(calData);
   menu=1; main_menu(); Status(dhcp_on);
   }
 
@@ -82,7 +70,7 @@ void loop() {
         {  
             ETH.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
             EEPROM.put(1,1);  EEPROM.commit();
-            dhcp_on = EEPROM.read(1);
+            EEPROM.get(1,dhcp_on);
             menu=1; main_menu();  Status(dhcp_on); delay(300); save_setting();
         }   
            if ((y>=y51) && (y<=y52+y51) && (x>=x51) && (x<=x52+x51) && (menu==3))             // Button: Set static IP

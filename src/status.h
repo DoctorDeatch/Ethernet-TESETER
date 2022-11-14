@@ -7,6 +7,7 @@ void Status(byte dhcp_on) {
 }
 
 void save_setting() {
+  tft.fillRect(400, 0, 480, 25, TFT_BLACK);  
   for (int i = 0; i < 3; i++) {
   tft.setTextSize(2); tft.setCursor(10, 250); tft.setTextColor(TFT_RED); delay(700); 
   tft.print ("Save settings and restart the system");

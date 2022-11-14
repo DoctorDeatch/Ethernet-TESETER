@@ -64,5 +64,5 @@
             if (rh==2) HO(host_name[0],set_ping);
             if (rh==3) HO(host_name[1],set_ping);
             if (rh==4) HL();   
-             } else {tft.setTextColor(TFT_MAGENTA);tft.print("No Cable");tft.print(digitalRead(nicCable));}
+             } else {tft.setTextColor(TFT_MAGENTA);tft.print("DOWN");tft.print(digitalRead(nicCable));}
             }
