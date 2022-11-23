@@ -45,7 +45,8 @@ build_flags =
 	-D ETH_PHY_ADDR=1
 	-D ETH_PHY_MDC=23
 	-D ETH_PHY_MDIO=18
-	-D nicCable=35
+	-D LINK_LED=35
+	-D EEPROM_SIZE=512
 lib_deps = 
 	bodmer/TFT_eSPI@^2.4.74
 	moononournation/GFX Library for Arduino@^1.2.6
