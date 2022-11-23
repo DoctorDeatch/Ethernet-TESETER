@@ -53,7 +53,7 @@
              tft.setTextSize(2); tft.setTextFont(1);tft.setTextColor(TFT_WHITE);
             tft.setCursor(5, 33); tft.print("Link: ");
              float avg_time_ms = Ping.averageTime();
-             if (digitalRead(nicCable)==0){ 
+             if (digitalRead(LINK_LED)==0){ 
              tft.setTextColor(TFT_GREEN);tft.print("OK ");tft.setTextColor(TFT_WHITE);tft.print(ETH.linkSpeed()); tft.print("Mbps");
              tft.setCursor(240, 33); tft.print("DNS: ");tft.print(ETH.dnsIP());
             //sprintf(mask,"%d.%d.%d.%d", ETH.subnetMask());
@@ -64,5 +64,5 @@
             if (rh==2) HO(host_name[0],set_ping);
             if (rh==3) HO(host_name[1],set_ping);
             if (rh==4) HL();   
-             } else {tft.setTextColor(TFT_MAGENTA);tft.print("DOWN");tft.print(digitalRead(nicCable));}
+             } else {tft.setTextColor(TFT_MAGENTA);tft.print("DOWN");tft.print(digitalRead(LINK_LED));}
             }

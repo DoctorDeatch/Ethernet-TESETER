@@ -22,8 +22,8 @@ uint16_t calData[5];
 static uint32_t timer;
 
 void setup() {
- pinMode(nicCable, INPUT_PULLUP);
-  EEPROM.begin(512);  EEPROM.get(1,dhcp_on);  EEPROM.get(50,count);
+ pinMode(LINK_LED, INPUT_PULLUP);
+  EEPROM.begin(EEPROM_SIZE);  EEPROM.get(1,dhcp_on);  EEPROM.get(50,count);
   randomSeed(analogRead(0));
   tft.init();  tft.setRotation(1);
   for (uint8_t i = 0; i < 5; i++)

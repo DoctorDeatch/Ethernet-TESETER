@@ -1,7 +1,7 @@
 void Status(byte dhcp_on) {
   EEPROM.get(50,cp);
   tft.setTextSize(2); tft.setTextFont(2); tft.setTextColor(TFT_GREEN);
-  tft.setCursor(10, 220); tft.print("MAK: "); tft.print(ETH.macAddress());
+  tft.setCursor(10, 220); tft.print("MAC: "); tft.print(ETH.macAddress());
   if (dhcp_on == 1) tft.print(" DHCP"); else tft.print(" Statik IP");
   tft.setCursor(10, 250); tft.print("Counting tests: ");tft.print(cp);
 }
